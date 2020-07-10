@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animações com spritesheets</title>
+    <link rel="shortcut icon" href="imgs/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="styles/idea.css">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <header class="ui fixed inverted menu">
+        <div class="ui container">
+            <a href="#" class="header item">
+                <img class="logo" src="imgs/favicon.png">
+                Animações com&nbsp;<em>spritesheets</em>
+            </a>
+            <div id="overworld" class="item">
+                <div id="overworld-map">
+                    <div id="overworld-char"></div>
+                    <div id="overworld-map-bullets">
+                        <span class="map-bullet"></span>
+                        <span class="map-bullet"></span>
+                        <span class="map-bullet"></span>
+                        <span class="map-bullet"></span>
+                    </div>
+                    <div id="overworld-map-names">
+                        <span class="map-name"><a href="#o-que-e-animacao" class="item link">Animação</a></span>
+                        <span class="map-name"><a href="#implementando-uma-animacao"
+                                class="item link">Implementando</a></span>
+                        <span class="map-name"><a href="#usando-imagens-sprites" class="item link">Imagens</a></span>
+                        <span class="map-name"><a href="#animacao-com-spritesheets"
+                                class="item link">Spritesheets</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="item treasure link" data-frame-y="10" data-frame-x="0" data-prize="#images-modal">
+                <div class="ui move up reveal">
+                    <div class="visible content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                    <div class="hidden content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="item treasure link" data-frame-y="6" data-frame-x="3" data-prize="#animation-class-modal">
+                <div class="ui move up reveal">
+                    <div class="visible content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                    <div class="hidden content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="item treasure link" data-frame-y="2" data-frame-x="4" data-prize="#sprite-class-modal">
+                <div class="ui move up reveal">
+                    <div class="visible content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                    <div class="hidden content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="item treasure link" data-frame-y="2" data-frame-x="8" data-prize="#animated-sprite-class-modal">
+                <div class="ui move up reveal">
+                    <div class="visible content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                    <div class="hidden content">
+                        <canvas width="48" height="48" class="ui image"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <a id="o-que-e-animacao"></a>
+        <div class="level" id="level-1">
+            <div class="ui text container">
+                <h1 class="ui header">O que é uma animação?</h1>
+                <p>Uma animação é composta por <strong>alguma propriedade cujo valor se altera ao longo do
+                        tempo</strong>.
+                    Por
+                    exemplo, se um objeto está em uma posição em um momento e vai se movimentando em alguma direção,
+                    temos
+                    uma
+                    animação. Mas também se ele
+                    começa com uma cor e ela vai se alterando, também temos uma animação. Tipo estes dois exemplos:</p>
+                <div id="animation-definition">
+                    <div class="stage"></div>
+                    <div class="stage"></div>
+                </div>
+                <p><span data-highlight="#animation-definition .stage:nth-child(1)">Aqui ↑</span>, a posição
+                    <code>x</code>
+                    do
+                    quadrado começa em 0 e vai até 300 ao longo de um tempinho. Já <span
+                        data-highlight="#animation-definition .stage:nth-child(2)">
+                        aqui ➚</span>, a cor inicial do círculo é azul <span class="swatch blue"></span> e a final é
+                    amarela<span class="swatch orange"></span>.</p>
+                <div id="size-animation" class="stage"></div>
+                <p>Basicamente, qualquer característica de um objeto que pode ser quantificada pode ter seu valor
+                    alterado
+                    ao
+                    longo do tempo, produzindo uma animação. Outro exemplo é o tamanho de um objeto.</p>
+                <p>A alteração dessas propriedades ocorre ao longo de um tempo definido para sua
+                    <strong>duração</strong>.
+                    Nestes exemplos, a
+                    animação tem duração de <strong>5s</strong>. Apesar de cada animação poder ter uma duração
+                    diferente, é
+                    bem
+                    útil usar uma <strong>variável <code>t</code>, que vai de 0 até 1</strong> e indica a
+                    <strong>porcentagem de
+                        conclusão</strong> da animação -
+                    independente da sua duração em segundos.</p>
+                <p><span data-highlight="#size-animation">À direita</span> podemos ver um círculo que, no tempo zero
+                    (<code>t = 0</code>) tem seu raio igual a 15 e, ao final
+                    da animação (<code>t = 1</code>) tem o raio igual a 45. <span class="treasure-clue popup"
+                        data-inverted data-position="top left"
+                        data-content="Experimente alterar o valor de t para ver o que acontece">Experimente</span> você
+                    mesmo definir o valor de
+                    <code>t</code>:</p>
+                <div class="stage" id="controlling-t"></div>
+                <!-- TODO colocar uma conclusão desta seção definindo animação -->
+                <p>Mas como podemos <strong>implementar</strong> uma animação?</p>
+            </div>
+            <a id="implementando-uma-animacao"></a>
+        </div>
+
+        <div class="level hidden" id="level-2">
+            <div class="ui text container">
+                <h1 class="ui header">Implementando uma animação</h1>
+                <p>Uma primeira ideia para fazer uma animação, digamos, da posição <code>y</code> de um objeto, é criar
+                    um
+                    laço
+                    <code>for</code> fazendo o valor da variável ir de seu <strong>valor inicial 0 até o final
+                        140</strong>. E digamos que queremos que a animação tenha <strong>duração de
+                        5s</strong>.
+                </p>
+                <div id="wrong-y-animation" class="stage vertical-right"></div>
+                <pre><code lang="js">const ctx = canvasEl.getContext('2d');              // linha 1
+
+function desenhaQuadrado(x, y) {                    // linha 3
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(x, y, 30, 30);
+}
+
+<div id="wrong-y-animation-9-11">for (let y = 0; y <= 140; y++) {                    // linha 9
+    desenhaQuadrado(10, y);
+}</div></code></pre>
+                <p>Ué, mas o que aconteceu <span data-highlight="#wrong-y-animation">ali ➚</span>? Não houve animação...
+                    vamos
+                    pensar...</p>
+                <p>O laço <code>for</code> das linhas <span data-highlight="#wrong-y-animation-9-11">9-11</span> é
+                    executado
+                    <code>141</code>
+                    vezes, <strong>muito rapidamente</strong>. Tão rápido quanto o navegador consegue, o que pode ser
+                    algo
+                    próximo de
+                    instantaneamente. Vamos fazer um teste.</p>
+                <div id="test-executing-for">
+                    <p>Nós vamos medir o tempo gasto para executar todo esse laço <code>for</code>, marcando o tempo
+                        antes e
+                        o
+                        tempo depois:</p>
+                    <pre id="wrong-y-animation-loop"><code class="js">console.time();        // começa a contar
+for (let y = 0; y <= 140; y++) {
+    desenhaQuadrado(10, y);
+}
+console.timeEnd();     // pára de contar</code></pre>
+                    <div class="result">
+                        <button id="wrong-y-animation-run" class="ui primary button animated">
+                            <div class="visible content">Executar</div>
+                            <div class="hidden content">
+                                <i class="right play icon"></i>
+                            </div>
+                        </button>
+                        <div id="wrong-y-animation-result" class="ui mini statistic invisible">
+                            <div class="value">
+                                <i class="clock outline icon"></i> <span class="actual-value">5,550</span>
+                            </div>
+                            <div class="label">
+                                milissegundos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TODO colocar uma animação chamativa no Executar até que ele seja clicado -->
+                <div class="sublevel hidden level-2-quiz-sublevel">
+                    <p>Poxa, mas isso foi bem rápido, <span class="treasure-clue popup" data-inverted
+                            data-position="top left" data-content="Responda a pergunta para liberar a próxima fase">não
+                            acha</span>??</p>
+                    <div id="quiz-pretty-fast">
+                        <div class="ui form">
+                            <ul class="grouped fields quiz">
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-pretty-fast"
+                                            id="quiz-pretty-fast-option-yes">
+                                        <label class="quiz-option-label" for="quiz-pretty-fast-option-yes">Nusga,
+                                            velocidade
+                                            <em>master
+                                                blaster</em> gigantesca.</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-pretty-fast"
+                                            id="quiz-pretty-fast-option-no">
+                                        <label class="quiz-option-label" for="quiz-pretty-fast-option-no">Não achei
+                                            tanto
+                                            assim,
+                                            você é
+                                            meio exagerado.</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-pretty-fast"
+                                            id="quiz-pretty-fast-option-crazy">
+                                        <label class="quiz-option-label" for="quiz-pretty-fast-option-crazy">Do quê você
+                                            tá
+                                            falando,
+                                            maluco?</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="quiz-result invisible">
+                            <div class="ui green segment hidden" data-response-for="#quiz-pretty-fast-option-yes"><i
+                                    class="check icon green"></i> Pois
+                                eu também achei!</div>
+                            <div class="ui brown segment hidden" data-response-for="#quiz-pretty-fast-option-no"><i
+                                    class="close icon brown"></i> Pontos
+                                de vista à parte, podemos convir que não foram 5s, mas bem menos que 1s.</div>
+                            <div class="ui brown segment hidden" data-response-for="#quiz-pretty-fast-option-crazy">
+                                <i class="close icon brown"></i> Pense bem, foi bem menos do que 1s!</div>
+                        </div>
+                    </div>
+
+                    <div class="level-2-after-quiz-sublevel sublevel hidden">
+                        <p>Acontece que o <strong>quadrado completou todo o seu movimento antes que pudéssemos
+                                ver</strong>
+                            -
+                            diferente
+                            do que queríamos, que acontecesse em <strong>5s</strong>. Vamos analisar o que fizemos de
+                            certo,
+                            e o
+                            que
+                            precisamos mudar:</p>
+                        <div class="ui segment">
+                            <div class="ui two column very relaxed stackable grid">
+                                <div class="column">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <i class="icon check"></i>
+                                            <div class="content">Precisamos de uma variável que represente a posição
+                                                <code>y</code>
+                                                do
+                                                quadrado.</div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="icon check"></i>
+                                            <div class="content">Essa variável <code>y</code> precisa ter um valor
+                                                inicial e
+                                                ir
+                                                incrementando.</div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="icon check"></i>
+                                            <div class="content">É necessário chamar a função para redesenhar o quadrado
+                                                toda
+                                                vez
+                                                que o
+                                                valor de
+                                                <code>y</code> é alterado.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="middle aligned column">
+                                    <div class="ui list">
+                                        <div class="item">
+                                            <i class="icon close"></i>
+                                            <div class="content">Em lugar algum especificamos que queríamos que a
+                                                animação
+                                                durasse
+                                                <strong>5s</strong>.</div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="icon close"></i>
+                                            <div class="content">O laço <code>for</code> não espera entre uma iteração e
+                                                outra,
+                                                mas
+                                                executa tão rápido quanto consegue.</div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="icon close"></i>
+                                            <div class="content">Precisamos que o valor de <code>y</code> seja
+                                                <strong>alterado
+                                                    de
+                                                    <code>0</code> a <code>140</code> ao longo de
+                                                    <code>5s</code></strong>.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui vertical divider">
+                                vs
+                            </div>
+                        </div>
+                        <p>Então... precisamos esperar um tempinho para incrementar o valor de <code>y</code> do
+                            quadrado.
+                            Portanto,
+                            precisamos atualizar o valor da variável várias vezes, não necessariamente
+                            <code>141</code>
+                            vezes
+                            apenas.
+                        </p>
+                        <p>Para fazer alguma coisa várias vezes por segundo em JavaScript, podemos usar
+                            <code>setInterval(função, intervalo)</code> para registrar uma <code>função</code> para
+                            que
+                            seja
+                            chamada
+                            a
+                            cada <code>intervalo</code> millissegundos. Vamos usar isso então e adaptar o código:
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui container relative level-2-after-quiz-sublevel sublevel hidden"
+                id="proper-y-animation-container">
+                <div class="explanation">
+                    <p>Putz, que tanto de código! Mas vamos entender cada partinha. Nas linhas <span
+                            data-highlight="#proper-y-animation-8-14">8-14</span>, criamos um objeto
+                        <code>anim</code>
+                        que
+                        descreve a
+                        animação que queremos fazer: um valor ir de <code>0</code> (<code>anim.inicial</code>) a
+                        <code>140</code>
+                        (<code>anim.final</code>) ao longo de 5.000ms (<code>anim.duracao</code>). Esse objeto
+                        também
+                        contém
+                        uma
+                        propriedade <code>t</code> que vai de <code>0</code> até <code>1</code> e representa a
+                        porcentagem
+                        de
+                        conclusão da animação. E também o <code>horarioInicio</code> que indica quando a animação
+                        começou -
+                        será
+                        útil logo mais.</p>
+                    <p>Já nas linhas <span data-highlight="#proper-y-animation-16-20">16-20</span>, verificamos
+                        quanto
+                        tempo
+                        se passou desde
+                        o início da animação para podermos saber o quanto ela está concluída (0 a 100%), indicado
+                        por
+                        <code>anim.t</code>.
+                    </p>
+                    <p>Em <span data-highlight="#proper-y-animation-22-26">22-26</span> nós apenas verificamos se
+                        chegamos
+                        ao final e, se
+                        sim, voltamos a animação ao início.</p>
+                    <p>Uma vez que já temos qual o novo valor de <code>anim.t</code>, podemos achar qual é a posição
+                        <code>y</code> atual e,
+                        em seguida, mandamos redesenhar o quadrado. Isso foi feito nas linhas <span
+                            data-highlight="#proper-y-animation-28-32">28-32</span>.</p>
+                    <p>Por fim, as linhas <span data-highlight="#proper-y-animation-34-35">34-35</span> registram a
+                        função
+                        <code>atualiza</code> pra que ela seja chamada várias vezes por segundo - no caso, 30 vezes.
+                    </p>
+                    <p>Com isso conseguimos implementar uma animação!!</p>
+                </div>
+                <pre><code lang="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');</span>
+
+<span class="unchanged">function desenhaQuadrado(x, y) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(x, y, 30, 30);
+}</span>
+<div id="proper-y-animation-8-14">const anim = {
+    horarioInicio: performance.now(),           // início da animação
+    duracao: 5000,                              // tempo em millissegundos
+    inicial: 0,                                 // y inicial do quadrado
+    final: 140,                                 // y final do quadrado
+    t: 0                                        // porcentagem de conclusão
+};</div>
+function atualiza() {
+<div id="proper-y-animation-16-20">    const horarioAgora = performance.now();
+    const tempoQueSePassou = horarioAgora - anim.horarioInicio;
+
+    // acha a porcentagem de conclusão da animação (de 0 a 1)
+    anim.t = tempoQueSePassou / anim.duracao;</div>
+
+<div id="proper-y-animation-22-26">    if (anim.t > 1) {
+        // se chegamos ao final da animação (t = 100%), reiniciamos ela
+        anim.t = 0;
+        anim.horarioInicio = horarioAgora;
+    }</div>
+
+<div id="proper-y-animation-28-32">    // define novo valor de y dada a porcentagem que já foi concluída
+    const y = anim.t * (anim.final - anim.inicial) + anim.inicial;
+
+    // desenha o quadrado na nova posição
+    desenhaQuadrado(10, y);</div>
+}
+
+<div id="proper-y-animation-34-35">// registra função 'atualiza' para ser chamada a cada 33ms (30x/s)
+setInterval(atualiza, 33);</div></code></pre>
+                <div>
+                    <div id="proper-y-animation" class="stage vertical-right"></div>
+                </div>
+            </div>
+
+            <div class="ui text container relative sublevel hidden level-2-after-quiz-sublevel">
+                <p>Super legal! Funcionou mesmo. Mas o código ficou meio grandinho... Seria bem legal se a maior
+                    parte
+                    desse código ficasse mais escondida pra eu poder reaproveitá-lo para criar mais de uma
+                    animação!!
+                    Por exemplo, seria lindo se desse pra escrever o código tipo assim: </p>
+                <div id="refactored-y-animation-container" class="relative">
+                    <pre><code class="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');
+        
+function desenhaQuadrado(x, y) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(x, y, 30, 30);
+}</span>      
+
+<div id="refactored-y-animation-8-10">// duração, valor inicial, valor final
+const animacaoY = new Animacao(5000, 0, 140);
+animacaoY.comecar();</div>
+function atualiza() {
+<div id="refactored-y-animation-13">    animacaoY.atualizar();</div><div id="refactored-y-animation-14">    const y = animacaoY.valor;</div><span class="unchanged">
+    desenhaQuadrado(10, y);</span>
+}
+        
+<span class="unchanged">setInterval(atualiza, 33);</span></code></pre>
+                    <div>
+                        <div id="refactored-y-animation" class="stage vertical-right"></div>
+                    </div>
+                    <div class="explanation">
+                        <p>Repare que as linhas <span data-highlight="#refactored-y-animation-8-10">8-10</span>,
+                            <span data-highlight="#refactored-y-animation-13">13</span> e <span
+                                data-highlight="#refactored-y-animation-14">14</span> criam ou usam um objeto do
+                            tipo
+                            <code>Animacao</code>. Pra que possamos fazer isso, devemos ter uma classe com esse nome
+                            e
+                            com
+                            os
+                            métodos usados: <code>comecar()</code>, <code>atualizar()</code> e <code>valor</code>.
+                        </p>
+                        <p>Por um acaso, podemos escrever uma <small id="animation-class-treasure-trigger"
+                                class="treasure-clue popup" data-inverted data-position="top left"
+                                data-content="Clique para resgatar outro baú">classe <code>Animacao</code></small> desse
+                            jeitinho,
+                            basta
+                            clicar ali pra ver!</p>
+                    </div>
+                </div>
+                <p>Desse jeito aí de cima, escondendo o código referente a animações dentro de uma class
+                    <code>Animacao</code>, fica facinho fazer animações de mais de uma coisa, olha só:</p>
+                <div id="various-animations-container" class="relative">
+                    <div>
+                        <div id="various-animations" class="stage vertical-right"></div>
+                    </div>
+                    <pre><code class="js">const animacaoY = new Animacao(5000, 0, 140);
+const animacaoX = new Animacao(5000, 30, 20);
+const animacaoTamanho = new Animacao(5000, 30, 60);
+
+function atualiza() {
+    animacaoX.atualizar();
+    animacaoY.atualizar();
+    animacaoTamanho.atualizar();
+
+    const x = animacaoX.valor;
+    const y = animacaoY.valor;
+    const tamanho = animacaoTamanho.valor;
+
+    desenhaQuadrado(x, y, tamanho);
+}
+
+animacaoX.comecar();
+animacaoY.comecar();
+animacaoTamanho.comecar();
+setInterval(atualiza, 33);</code></pre>
+                </div>
+            </div>
+            <!-- TODO colocar conclusão falando como implementar uma animação -->
+            <div class="ui text container  sublevel hidden level-2-after-quiz-sublevel">
+                <p>Mas e se quisermos fazer animação além de posições, tamanhos e cores, mas com imagens também?</p>
+                <div class="ui segment gray">
+                    <i class="icon info"></i>
+                    Para passar pra próxima fase, você precisa verificar o código da classe <code>Animacao</code> um
+                    pouco mais acima.
+                </div>
+            </div>
+        </div>
+        <a id="usando-imagens-sprites"></a>
+        </div>
+
+        <div class="level hidden" id="level-3">
+            <div class="ui text container">
+                <h1 class="ui header">Usando imagens: <em>sprites</em></h1>
+                <p>Além de desenhar formas geométricas no <code>canvas</code>, também é possível desenhar imagens. O
+                    objeto
+                    de contexto do <code>canvas</code> possui o método <code>drawImage(...)</code>, que tem o seguinte
+                    formato:</p>
+                <pre><code class="js">ctx.drawImage(imagem, x, y);</code></pre>
+                <p>Para definir qual imagem usar, podemos criar um objeto <code>new Image(caminho)</code> e passá-la
+                    para a
+                    função <code>ctx.drawImage(...)</code>. Tipo assim:</p>
+                <div class="stage" id="slime-draw"></div>
+                <pre><code class="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');</span>
+const slime = new Image();
+slime.src = 'imgs/slime.png';
+                   // x,  y
+ctx.drawImage(slime, 10, 10);</code></pre>
+                <!-- TODO colocar que apesar do código acima funcionar, se a imagem for grande pode levar um tempo até que ela seja baixada pelo navegador... mostrar exemplo -->
+                <div class="stage" id="slime-x"></div>
+                <p>Assim como fizemos quando animamos um quadrado, podemos animar a posição do <em>slime</em>.</p>
+                <p>Se quisermos desenhar o slime com um tamanho maior, por exemplo, também existe uma versão da função
+                    <code>ctx.drawImage(...)</code> que recebe 5 parâmetros:</p>
+                <div class="stage" id="slime-draw-large"></div>
+                <pre><code class="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');
+const slime = new Image();
+slime.src = 'imgs/slime.png';</span>
+                         // larg, alt
+ctx.drawImage(slime, 10, 10, 128, 128);</code></pre>
+                <p>Mas e se quisermos fazer uma animação como se fosse uma imagem <code>.gif</code>?</p>
+                <p>Se mandarmos desenhar um arquivo <code>.gif</code> contendo uma animaçãozinha em um
+                    <code>&lt;canvas&gt;&lt;/canvas&gt;</code>, apenas o primeiro quadro da animação será mostrado
+                    (igualzinho <span data-highlight="#slime-draw-large">ali ➚</span>), como se fosse um arquivo
+                    <code>.png</code> ou <code>.jpg</code>.</p>
+                <p>Pra ter uma animação de imagens dentro de um <code>canvas</code>, então, precisamos de uma imagem que
+                    contenha todos os quadros de animação e usar uma técnica chamada <strong>animação com
+                        <em>spritesheets</em></strong>.</p>
+
+                <div class="ui piled segment">
+                    <h4 class="ui header">Revisão <small class="treasure-clue popup"
+                            data-content="Responda corretamente para passar de fase">responda para ir adiante</small>
+                    </h4>
+                    <p>Para passar para a próxima fase, responda: <strong>o que é uma <em>Sprite</em>?</strong></p>
+                    <div id="quiz-sprite">
+                        <div class="ui form">
+                            <ul class="grouped fields quiz">
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-sprite"
+                                            id="quiz-sprite-option-soda">
+                                        <label class="quiz-option-label" for="quiz-sprite-option-soda">Um refrigerante
+                                            sabor laranja.</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-sprite"
+                                            id="quiz-sprite-option-image">
+                                        <label class="quiz-option-label" for="quiz-sprite-option-image">Uma imagem
+                                            desenhada na tela de um jogo.</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-sprite"
+                                            id="quiz-sprite-option-fairy">
+                                        <label class="quiz-option-label" for="quiz-sprite-option-fairy">Um ser
+                                            mitológico parecido com uma fadinha.</label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="quiz-result invisible">
+                            <div class="ui green segment hidden" data-response-for="#quiz-sprite-option-image"><i
+                                    class="check icon green"></i> GÊNIO(A)(X)!</div>
+                            <div class="ui brown segment hidden" data-response-for="#quiz-sprite-option-soda"><i
+                                    class="close icon brown"></i> Sprite saber laranja?? D'onde já se viu...</div>
+                            <div class="ui brown segment hidden" data-response-for="#quiz-sprite-option-fairy">
+                                <i class="close icon brown"></i> Olha, errado não tá... Mas tenta aí de novo.</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- TODO colocar conclusão explicando o ctx.drawImage -->
+            </div>
+            <a id="animacao-com-spritesheets"></a>
+        </div>
+
+        <!-- Início do LEVEL 4 -->
+        <div class="level hidden" id="level-4">
+            <div class="ui text container">
+                <h1 class="ui header">Animação com <em>spritesheets</em></h1>
+                <p>Para fazermos uma animação de imagens em um <code>&lt;canvas&gt;&lt;/canvas&gt;</code>, precisamos de
+                    ter
+                    <strong>uma mesma imagem contendo todos os quadros de animação</strong> (em inglês, uma
+                    <em>spritesheet</em>). Olha essa imagem do
+                    <code>slime-atoa-spritesheet.png</code>.</p>
+                <img src="imgs/slime-atoa-spritesheet.png" alt="Quadros da animação do slime atoa"
+                    class="block-centered pixelated" style="transform: translateY(-20px); width: 640px;"
+                    id="img-slime-atoa-spritesheet">
+                <p>Tudo bem, mas o que fazemos com isso?!</p>
+                <p>A função <code>ctx.drawImage(...)</code> tem uma terceira (e última) forma, que recebe 9 parâmetros.
+                    Eles
+                    são os seguintes:</p>
+                <pre><code class="hs">ctx.drawImage(
+<span class="unchanged">    imagem,                     // a imagem sendo desenhada</span>
+    xQuadro,                    // o x do retângulo dentro da imagem 
+    yQuadro,                    // o y do retângulo ...
+    larguraQuadro,              // largura do quadro
+    alturaQuadro,               // altura do quadro
+<span class="unchanged">    x,                          // x do canvas onde queremos que apareça
+    y,                          // y do canvas ...
+    largura,                    // largura no canvas
+    altura                      // altura no canvas</span>
+);</code></pre>
+                <p>Repare que a imagem <code
+                        data-highlight="#img-slime-atoa-spritesheet">slime-atoa-spritesheet.png</code>
+                    tem o tamanho de 320x32 representando <strong>10
+                        quadros de animação</strong> ("subimagens"). Ou seja, se em 320 pixels de largura há 10 quadros,
+                    cada quadro tem
+                    tamanho 32x32.</p>
+                <p>Quando formos desenhá-la, vamos pegar apenas um desses quadros para desenhar. Se quisermos o <span
+                        data-highlight="#draw-image-frame-0">primeiro</span>, o
+                    <span data-highlight="#draw-image-frame-1">segundo</span> ou o <span
+                        data-highlight="#draw-image-frame-9">último</span>, faríamos respectivamente assim:</p>
+                <div id="spritesheet-frames">
+                    <pre id="draw-image-frame-0"><code class="hs">ctx.drawImage(
+<span class="unchanged">    imagem,</span>
+    <ins>0</ins>,    // xQuadro
+    0,    // yQuadro
+    32,   // larguraQuadro
+    32,   // alturaQuadro
+<span class="unchanged">    x,
+    y,
+    largura,
+    altura</span>
+);</code></pre>
+                    <pre id="draw-image-frame-1"><code class="hs">ctx.drawImage(
+<span class="unchanged"> imagem,</span>
+    <ins>32</ins>,   // xQuadro
+    0,    // yQuadro
+    32,   // larguraQuadro
+    32,   // alturaQuadro
+<span class="unchanged">    x,
+    y,
+    largura,
+    altura</span>
+);</code></pre>
+                    <p>...</p>
+                    <pre id="draw-image-frame-9"><code class="hs">ctx.drawImage(
+<span class="unchanged"> imagem,</span>
+    <ins>320-32</ins>, // xQuadro
+    0,      // yQuadro
+    32,   // larguraQuadro
+    32,   // alturaQuadro
+<span class="unchanged">    x,
+    y,
+    largura,
+    altura</span>
+);</code></pre>
+                </div>
+                <p>Nesse exemplo, para desenhar cada quadro, nós simplesmente precisamos encontrar qual o
+                    <code>xQuadro</code> para desenhar cada quadro. Como a largura (e altura) de cada quadro é 32, ficou
+                    moleza!</p>
+                <div id="quiz-frame-formula-container">
+                    <pre><code class="js">function desenhaQuadro(quadro, x, y) {
+    ctx.drawImage(
+        slime,      // imagem do slime
+        ???,        // xQuadro: uma fórmula
+        0,          // yQuadro sempre 0
+        32,         // larg/alt do quadro é 32
+        32,
+        x,          // x,y do parâmetro
+        y,
+        32,         // larg/alt sempre 32
+        32
+    );
+}</code></pre>
+                    <div>
+                        <p>Poderíamos inclusive criar uma função <code>desenhaQuadro(quadro, x, y)</code>, que recebesse
+                            um
+                            número de
+                            <code>0</code> a <code>9</code> indicando qual quadro desenhar... como você a faria?</p>
+                        <div id="quiz-frame-container">
+                            <div class="ui form">
+                                <ul class="grouped fields quiz">
+                                    <li class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                                id="quiz-frame-option-0">
+                                            <label class="quiz-option-label" for="quiz-frame-option-0"><code>0</code>,
+                                                ué.</label>
+                                        </div>
+                                    </li>
+                                    <li class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                                id="quiz-frame-option-32">
+                                            <label class="quiz-option-label" for="quiz-frame-option-32"><code>32</code>,
+                                                não?</label>
+                                        </div>
+                                    </li>
+                                    <li class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                                id="quiz-frame-option-formula">
+                                            <label class="quiz-option-label"
+                                                for="quiz-frame-option-formula"><em>Easy</em>,
+                                                <code>quadro * 32</code></label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="stage" id="quiz-frame"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Muito bem! Agora, se juntarmos essa forma de desenhar apenas 1 quadro de uma imagem, com o que vimos
+                    sobre animação, podemos <strong>alterar uma variável <code>quadro</code> ao longo do tempo</strong>.
+                </p>
+                <div id="spritesheet-animation-container">
+                    <pre><code class="js" id="spritesheet-animation-code"><span id="spritesheet-animation-code-1">const animacao = new Animacao(800, 0, 9);</span>
+
+<span class="unchanged">function desenhaQuadro(quadro, x, y) {
+    ctx.drawImage(
+        slime,</span>
+        // origem na imagem
+        quadro * 32,
+        <span class="unchanged">0,
+        32,
+        32,
+        // destino no canvas
+        x, y, 32, 32
+    );
+}</span>
+
+function atualiza() {
+    animacao.atualizar();
+
+<div id="spritesheet-animation-code-18-19">    let quadro = animacao.valor;
+    quadro = Math.floor(quadro);</div>
+    desenhaQuadro(x, y, quadro);
+}
+
+animacao.comecar();
+<span class="unchanged">setInterval(atualiza, 33);</span></code></pre>
+                    <div>
+                        <p>Na <span data-highlight="#spritesheet-animation-code-1">linha 1</span> criamos uma animação,
+                            que
+                            faz um valor ir de 0 a 9 em 0,8s.</p>
+                        <p>E no <em>loop</em> de atualização, usamos esse valor como o quadro atual. Note nas <span
+                                data-highlight="#spritesheet-animation-code-18-19">linhas 18-19</span> que esse valor é
+                            um
+                            número real <small>(pode ter parte fracionário, como 2.64, 3.61 etc.)</small> e, portanto,
+                            precisamos convertê-lo para inteiro, arrendondando para baixo com
+                            <code>Math.floor(numeroReal)</code>.</p>
+                        <div class="stage" id="spritesheet-animation"></div>
+                    </div>
+                </div>
+                <div class="stage" id="spritesheet-animation-result"></div>
+                <p>Show!! O resultado é <span data-highlight="#spritesheet-animation-result">← este aqui</span>. Com
+                    esse
+                    conhecimento, não é difícil imaginar como fazer uma animação com <em>spritesheets</em> se a imagem
+                    tiver
+                    os quadros não apenas em linha, mas em colunas também, como <span
+                        data-highlight="#spritesheet-full-image">⬋ esta aqui</span>.</p>
+                <div id="spritesheet-large-container">
+                    <div id="spritesheet-large-image-container">
+                        <span>à toa ››</span>
+                        <span>rolando ››</span>
+                        <span>pulando ››</span>
+                        <span>atacando ››</span>
+                        <span>morrendo ››</span>
+                        <img src="imgs/slime-spritesheet.png" id="spritesheet-full-image" alt="">
+                    </div>
+                    <div id="spritesheet-large-cell">
+                        <p>Com essa pequena alteração e a nova imagem, ficaria assim: <small
+                                class="push-right treasure-clue popup"
+                                data-content="Troque qual linha da spritesheet está sendo usada">experimente alterar a
+                                linha</small></p>
+                        <div class="stage" id="spritesheet-large"></div>
+                    </div>
+                    <pre><code class="js">let linha = 2;
+
+<span class="unchanged">function desenha(quadro, x, y) {
+    ctx.drawImage(
+        slime,</span>
+        // origem na imagem
+        quadro * 32,
+        linha * 32,
+<span class="unchanged">        32,
+        32,
+        // destino no canvas
+        x, y, 32, 32
+    );
+}</span></code></pre>
+                </div>
+                <!-- TODO colocar uma conclusão sobre spritesheets -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="ui inverted vertical footer segment">
+        <div class="ui center aligned container">
+            <div class="ui stackable inverted divided centered grid">
+                <div class="ten wide column  center aligned">
+                    <h4 class="ui inverted header">Animações com <em>spritesheets</em></h4>
+                    <p>Esta é uma <a href="https://explorabl.es" target="_blank">Explicação Explorável</a> criada por <a
+                            href="mailto:fegemo@cefetmg.br">Flávio Coutinho</a> no CEFET-MG para mostrar como animações
+                        de imagens usando <em>spritesheets</em> podem ser feitas em JavaScript.</p>
+                    <p>Você consegue chegar e passar da última fase??</p>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <img src="imgs/favicon.png" class="ui centered mini image">
+        </div>
+    </footer>
+    <aside>
+        <div id="sprite-class-modal" class="ui modal">
+            <div class="header">Você agora é dono de uma classe <code>Sprite</code>!</div>
+            <div class="scrolling content">
+                <pre><code class="js">class Sprite {
+    constructor(imagem, x, y, largura, altura) {
+        this.imagem = imagem;
+        this.x = x;
+        this.y = y;
+        this.largura = largura;
+        this.altura = altura;
+        this.imagemPronta = false;
+        imagem.addEventListener('load', () => this.imagemPronta = true);
+    }
+
+    desenhar(ctx) {
+        if (this.imagemPronta) {
+            ctx.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
+        }
+    }
+}</code></pre>
+            </div>
+        </div>
+
+        <div id="animated-sprite-class-modal" class="ui modal">
+            <div class="header">Nussa!! Agora tem uma <code>SpriteAnimada</code> e a <code>Clip</code> de animação de
+                <em>spritesheets</em>!!!</div>
+            <div class="scrolling content">
+                <div class="ui top attached tabular menu">
+                    <div class="active item" data-tab="animated-sprite-first"><code>SpriteAnimada</code></div>
+                    <div class="item" data-tab="animated-sprite-second"><code>Clip</code></div>
+                </div>
+                <div class="ui bottom attached active tab segment" data-tab="animated-sprite-first">
+                    <pre><code class="js">class SpriteAnimada extends Sprite {
+    constructor(imagem, x, y, largura, altura, larguraQuadro, alturaQuadro, clips, clipAtual) {
+        super(imagem, x, y, largura, altura);
+        this.larguraQuadro = larguraQuadro;
+        this.alturaQuadro = alturaQuadro;
+        clips.forEach(clip => this.animacoes.push(clip));
+        this.clips = clips.reduce((accum, clip) => {
+            accum[clip.nome] = clip;
+            return accum;
+        }, {});
+        this.clipAtual = this.clips[clipAtual];
+        this.clipAtual.comecar();
+        imagem.addEventListener('load', () => {
+            this.colunas = (+imagem.width) / this.larguraQuadro;
+            this.linhas = (+imagem.height) / this.alturaQuadro;
+        });
+    }
+
+    desenhar(ctx) {
+        if (this.imagemPronta) {
+            const quadro = this.quadro;
+            ctx.drawImage(
+                this.imagem,
+                quadro.x, quadro.y, this.larguraQuadro, this.alturaQuadro,
+                this.x, this.y, this.largura, this.altura
+            );
+        }
+    }
+
+    animar(nomeClip) {
+        this.clipAtual = this.clips[nomeClip];
+        this.clipAtual.comecar();
+    }
+
+    get quadro() {
+        const indiceQuadro = this.clipAtual.quadro;
+        return {
+            x: (indiceQuadro % this.colunas) * this.larguraQuadro,
+            y: Math.floor(indiceQuadro / this.colunas) * this.alturaQuadro
+        };
+    }
+}</code></pre>
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="animated-sprite-second">
+                    <pre><code class="js">export class Clip extends Animacao {
+    constructor(nome, sequenciaQuadros, duracao, loop = true, quandoTerminar) {
+        super(duracao, 0, sequenciaQuadros.length, loop, quandoTerminar);
+        this.nome = nome;
+        this.sequenciaQuadros = sequenciaQuadros;
+    }
+
+    get quadro() {
+        const indice = Math.max(0, Math.min(this.sequenciaQuadros.length - 1, Math.floor(super.valor)));
+        return this.sequenciaQuadros[indice];
+    }
+}</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div id="animation-class-modal" class="ui modal">
+            <div class="header">Pronto, você agora tem uma classe <code>Animacao</code>!!</div>
+            <div class="scrolling content">
+                <pre><code class="js">class Animacao {
+    constructor(duracao, inicial, final) {
+        this.duracao = duracao;
+        this.inicial = inicial;
+        this.final = final;
+        this.executando = false;
+    }
+
+    comecar() {
+        this.horarioInicio = performance.now();
+        this.t = 0;
+        this.executando = true;
+    }
+
+    atualizar() {
+        if (!this.executando) {
+            return;
+        }
+
+        const horarioAgora = performance.now();
+        const tempoQueSePassou = horarioAgora - this.horarioInicio;
+
+        // acha a porcentagem de conclusão da animação (de 0 a 1)
+        this.t = tempoQueSePassou / this.duracao;
+
+
+        if (this.t > 1) {
+            // se chegamos ao final da animação (t = 100%), reiniciamos ela
+            this.t = 0;
+            this.horarioInicio = horarioAgora;
+        }
+    }
+                
+    get valor() {
+        return this.t * (this.final - this.inicial) + this.inicial;
+    }
+}</code></pre>
+            </div>
+        </div>
+        <div id="images-modal" class="ui modal">
+            <div class="header">Kit de imagens de slimes</div>
+            <div class="scrolling content">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="imgs/slime-parado.png" class="pixelated">
+                    </div>
+                    <div class="content">
+                        <span class="right floated">
+                            <i class="icon image outline"></i>
+                            32x32
+                        </span>
+                        <a href="imgs/slime-parado.png" download>
+                            <i class="icon download"></i>
+                            slime-parado.png
+                        </a>
+                    </div>
+                </div>
+                <div class="ui card">
+                    <div class="image">
+                        <img src="imgs/slime-atoa-spritesheet.png" class="pixelated">
+                    </div>
+                    <div class="content">
+                        <a href="imgs/slime-atoa-spritesheet.png" download>
+                            <i class="icon download"></i>
+                            slime-atoa-spritesheet.png
+                        </a>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            <i class="icon expand"></i>
+                            32x32
+                        </span>
+                        <span class="right floated">
+                            <i class="icon image outline"></i>
+                            320x32
+                        </span>
+                    </div>
+                </div>
+                <div class="ui card">
+                    <div class="image">
+                        <img src="imgs/slime-spritesheet.png" class="pixelated">
+                    </div>
+                    <div class="content">
+
+                        <a href="imgs/slime-spritesheet.png" download>
+                            <i class="icon download"></i>
+                            slime-spritesheet.png
+                        </a>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            <i class="icon expand"></i>
+                            32x32
+                        </span>
+                        <span class="right floated">
+                            <i class="icon image outline"></i>
+                            320x160
+                        </span>
+                    </div>
+                </div>
+                <div class="ui card">
+                    <div class="image">
+                        <img src="imgs/slime-vermelha.png" class="pixelated">
+                    </div>
+                    <div class="content">
+                        <a href="imgs/slime-vermelha.png" download>
+                            <i class="icon download"></i>
+                            slime-vermelha.png
+                        </a>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            <i class="icon expand"></i>
+                            24x24
+                        </span>
+                        <span class="right floated">
+                            <i class="icon image outline"></i>
+                            72x72
+                        </span>
+                    </div>
+                </div>
+                <div class="ui card">
+                    <div class="image">
+                        <img src="imgs/treasure-chests.png" class="pixelated">
+                    </div>
+                    <div class="content">
+                        <a href="imgs/treasure-chests.png" download>
+                            <i class="icon download"></i>
+                            treasure-chests.png
+                        </a>
+                    </div>
+                    <div class="extra content">
+                        <span class="right floated">
+                            <i class="icon expand"></i>
+                            32x32
+                        </span>
+                        <span class="right floated">
+                            <i class="icon image outline"></i>
+                            320x384
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="end-modal" class="ui basic modal">
+            <div class="ui icon header">
+                <i class="trophy icon"></i>
+                Você zerou o jogo!
+            </div>
+            <div class="content">
+                <p>Você concluiu esta <a href="https://explorabl.es" target="_blank">Explicação Explorável</a> com
+                    sucesso!</p>
+                <p>Se você gostou do conceito, veja mais informações no rodapé desta página.</p>
+            </div>
+            <div class="actions">
+                <div class="ui green ok inverted button">
+                    <i class="checkmark icon"></i>
+                    Coletar meu tesouro
+                </div>
+            </div>
+        </div>
+    </aside>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="scripts/highlight.pack.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+</body>
+
+</html>

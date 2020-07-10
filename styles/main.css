@@ -1,0 +1,599 @@
+html,
+body {
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    margin-top: 7em;
+}
+
+footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+}
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+p {
+    text-align: justify;
+    line-height: 1.75em;
+    margin: 0 0 1.75em;
+}
+
+code {
+    font-size: .8em;
+}
+
+.ui.container > h1,
+.ui.text.container > h1 {
+    margin-top: 2.5em;
+}
+
+.stage {
+    display: flex;
+}
+
+.stage.highlighted {
+    position: relative;
+}
+
+.stage.highlighted::after {
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: gainsboro;
+    animation: highlight 400ms ease-in 0ms infinite alternate;
+}
+
+img.highlighted,
+pre.highlighted {
+    border-radius: 5px;
+    background-color: gainsboro;
+    animation: highlight 400ms ease-in 0ms infinite alternate;
+}
+
+code * {
+    transition: all 200ms ease-out;
+}
+
+code .highlighted  {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px 2px #0003;
+}
+
+@keyframes highlight {
+    from { 
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+code[data-highlight],
+span[data-highlight] {
+    background-color: gainsboro;
+    font-size: .9em;
+    padding: .05em 0.2em;
+    border-radius: 3px;
+    border: 1px solid #0003;
+    cursor: help;
+}
+
+#overworld {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 0;
+}
+
+#overworld-char {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.map-bullet {
+    bottom: 5px;
+}
+
+.map-name .item {
+    justify-content: center;
+}
+
+.map-bullet,
+.map-name {
+    position: relative;
+    width: 140px;
+    display: inline-block;
+    text-align: center
+}
+
+.map-bullet::after {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    left: 50%;
+    background-color: white;
+    border-radius: 50%;
+    padding: 1px;
+    border: 1px solid white;
+    background-clip: content-box;
+    box-sizing: content-box;
+}
+
+.map-bullet:not(:first-child)::before {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    left: -50%;
+    top: 4px;
+    background-color: #fff9;
+}
+
+.map-name:last-of-type .item::before {
+    display: none;
+}
+
+.ui.menu .item.treasure {
+    padding: 5px;
+}
+
+.claimed .ui.move.up.reveal>.visible.content {
+    opacity: 0;
+}
+
+.hljs {
+    background-color: beige;
+    border-radius: 5px;
+    font-size: .8em;
+}
+
+.bound-input {
+    margin-left: 1em;
+}
+
+.bound-input {
+    white-space: nowrap;
+    font-size: 0.75em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bound-input input {
+    display: block;
+}
+
+.number-input {
+    text-align: right;
+    border: 1px solid silver;
+    border-radius: 5px;
+    padding: 0.25em;
+}
+
+.number-input[readonly],
+.number-input[disabled] {
+    border-color: transparent;
+    color: gray;
+}
+
+.number-input-1 {
+    width: 3em;
+}
+
+.number-input-2 {
+    width: 3em;
+}
+
+.number-input-3 {
+    width: 4em;
+}
+
+#animation-definition {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+#animation-definition .stage:nth-child(2),
+#size-animation {
+    margin-right: 2em;
+}
+
+#size-animation {
+    float: right;
+    margin-left: 1em;
+}
+
+#controlling-t {
+    justify-content: center;
+}
+
+.swatch {
+    display: inline-block;
+    width: .75em;
+    height: .75em;
+    margin: 0 0.25em;
+    border: 1px solid #0003;
+    border-radius: 3px;
+    background-color: var(--color);
+}
+
+.swatch.blue {
+    --color: #6495ed;
+}
+
+.swatch.orange {
+    --color: #daa520;
+}
+
+.invisible {
+    opacity: 0 !important;
+    transform: scale(1.1) !important;
+}
+
+ul.quiz {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.stage.vertical-right {
+    float: right;
+    flex-direction: column;
+}
+
+.stage.vertical-right .bound-input {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#test-executing-for {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+#test-executing-for > pre {
+    flex-basis: 100%;
+    margin: 0 1em;
+}
+
+#test-executing-for .result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#wrong-y-animation-result {
+    transform: scale(1);
+    opacity: 1;
+    transition: all 400ms ease-out;
+}
+
+.relative {
+    position: relative;
+}
+
+#proper-y-animation,
+#refactored-y-animation {
+    position: sticky;
+    top: 0;
+}
+
+.unchanged {
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+#proper-y-animation-container,
+#refactored-y-animation-container {
+    display: flex;
+    font-size: 16px;
+    margin-top: 1.75em;
+}
+
+#proper-y-animation-container pre,
+#refactored-y-animation-container pre {
+    margin-top: 0;
+    margin-right: 1em;
+}
+
+#proper-y-animation-container .explanation {
+    order: 3;
+    margin-left: 1em;
+}
+
+#slime-draw,
+#slime-x,
+#slime-draw-large {
+    float: right;
+    margin-left: 1em;
+}
+
+#refactored-y-animation-container .explanation {
+    margin-left: 1em;
+}
+
+.block-centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pixelated {
+    image-rendering: pixelated;
+}
+
+#spritesheet-frames {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#spritesheet-frames pre {
+    margin-top: 0;
+}
+
+#quiz-frame-formula-container {
+    display: flex;
+}
+
+#quiz-frame-formula-container pre {
+    margin-top: 0;
+    margin-right: 1em;
+}
+
+#quiz-frame-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#quiz-frame {
+    align-items: center;
+}
+
+#spritesheet-animation-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#spritesheet-animation-container > pre {
+    margin-top: 0;
+    margin-right: 1em;
+    flex: 1;
+}
+
+#spritesheet-animation-container > div {
+    flex: 0;
+}
+
+#spritesheet-animation {
+    position: relative;
+}
+
+#spritesheet-animation .bound-input {
+    position: absolute;
+    right: 0;
+}
+
+#spritesheet-animation .bound-input:nth-of-type(1) {
+    top: 0;
+    width: 62px;
+}
+
+#spritesheet-animation .bound-input:nth-of-type(2) {
+    top: 3.5em;
+    width: 62px;
+}
+
+#spritesheet-animation .bound-input:nth-of-type(3) {
+    top: 7em;
+    width: 62px;
+}
+
+#spritesheet-animation-result {
+    float: left;
+    margin-right: 1em;
+}
+
+#spritesheet-large-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
+    justify-content: space-between;
+    grid-row-gap: 0.75em;
+}
+
+#spritesheet-large-container > pre {
+    grid-row: 1/3;
+    grid-column: 3/4;
+}
+
+#spritesheet-large-cell {
+    grid-row: 2/3;
+    grid-column: 1/3;
+}
+
+#spritesheet-large-cell > p {
+    margin-bottom: 0;
+}
+
+#spritesheet-large {
+    justify-content: center;
+    align-items: center;
+}
+
+#spritesheet-large-image-container {
+    grid-row: 1/2;
+    grid-column: 1/3;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: repeat(5, 32px);
+    width: fit-content;
+    align-items: flex-end;
+    grid-column-gap: 0.5em;
+}
+
+#spritesheet-large-image-container > img {
+    grid-column: 2 / 3;
+    grid-row: 1 / 6;
+    position: relative;
+    top: -5px;
+}
+
+#spritesheet-large-image-container > span {
+    grid-column: 1 / 2;
+    text-align: right;
+    animation: pointing 1600ms linear 0s infinite;
+    font-size: .8em;
+}
+
+#spritesheet-large-image-container > span:nth-of-type(1) {
+    animation-delay: 0ms;
+}
+
+#spritesheet-large-image-container > span:nth-of-type(2) {
+    animation-delay: 75ms;
+}
+
+#spritesheet-large-image-container > span:nth-of-type(3) {
+    animation-delay: 150ms;
+}
+
+#spritesheet-large-image-container > span:nth-of-type(4) {
+    animation-delay: 225ms;
+}
+
+#spritesheet-large-image-container > span:nth-of-type(5) {
+    animation-delay: 300ms;
+}
+
+@keyframes pointing {
+    0% { transform: translateX(-1em); }
+    12% { transform: translateX(-0.5em); }
+    20% { transform: translateX(-0.25em); }
+    26% { transform: translateX(-0.12em); }
+    30% { transform: translateX(-0.0.5em); }    
+    33% { transform: translateX(0em); }
+    100% { transform: translateX(-1em); }
+}
+
+#images-modal > .content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#images-modal .right.floated {
+    margin-left: 1em;
+}
+
+.level,
+.sublevel {
+    transform: translateY(0em);
+    opacity: 1;
+    transition: all 400ms ease-out;
+}
+
+.level.hidden,
+.sublevel.hidden {
+    position: absolute;
+    transform: translateY(-100%); 
+    opacity: 0;
+    pointer-events: none;
+}
+
+.treasure-clue {
+    padding: 0 0.15em;
+    border-radius: 7px;
+    border: 1px dashed #0003;
+    display: inline-block;
+}
+
+.treasure-clue::before {
+    content: "";
+    display: inline-block;
+    margin-right: 0.5em;
+    background-image: url(../imgs/treasure-icon.png);
+    background-repeat: no-repeat;
+    width: 1em;
+    height: 1em;
+    background-size: contain;
+    position: relative;
+    top: 0.15em;
+} 
+
+.popup {
+    cursor: help;
+}
+
+.quiz-result {
+    float: right;
+    max-width: 50%;
+    align-self: center;
+    flex: 1;
+}
+
+#quiz-pretty-fast {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1.5em;
+}
+
+.quiz-result .segment.hidden {
+    display: none;
+}
+
+#animation-class-treasure-trigger {
+    cursor: pointer;
+}
+
+.jumping {
+    animation: jumping 1.2s infinite;
+    position: relative;
+    top: 1em;
+}
+
+#overworld-char.jumping {
+    transform-origin: 88%;
+    animation-delay: 500ms;
+    top: 1.5em;
+}
+
+@keyframes jumping {
+    0% { transform: translate(0, 0%) scale(1.25, 0.75); }
+    50% { transform: translate(0, -75%) scale(1, 1); }
+    55% { transform: translate(0, -75%) rotate(15deg); }
+    60% { transform: translate(0, -75%) rotate(-15deg); }
+    65% { transform: translate(0, -75%) rotate(15deg); }
+    70% { transform: translate(0, -75%) rotate(-15deg); }
+    100% { transform: translate(0, 0%) scale(1.25, 0.75); }
+}
+
+.push-right {
+    float: right;
+    margin-left: 1em;
+}
