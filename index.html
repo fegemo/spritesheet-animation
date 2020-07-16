@@ -82,6 +82,7 @@
 
     <main>
         <a id="o-que-e-animacao"></a>
+        <!-- Início do LEVEL 1 -->
         <div class="level" id="level-1">
             <div class="ui text container">
                 <h1 class="ui header">O que é uma animação?</h1>
@@ -133,6 +134,7 @@
             <a id="implementando-uma-animacao"></a>
         </div>
 
+        <!-- Início do LEVEL 2 -->
         <div class="level hidden" id="level-2">
             <div class="ui text container">
                 <h1 class="ui header">Implementando uma animação</h1>
@@ -191,7 +193,6 @@ console.timeEnd();     // pára de contar</code></pre>
                         </div>
                     </div>
                 </div>
-                <!-- TODO colocar uma animação chamativa no Executar até que ele seja clicado -->
                 <div class="sublevel hidden level-2-quiz-sublevel">
                     <p>Poxa, mas isso foi bem rápido, <span class="treasure-clue popup" data-inverted
                             data-position="top left" data-content="Responda a pergunta para liberar a próxima fase">não
@@ -503,6 +504,7 @@ setInterval(atualiza, 33);</code></pre>
         <a id="usando-imagens-sprites"></a>
         </div>
 
+        <!-- Início do LEVEL 3 -->
         <div class="level hidden" id="level-3">
             <div class="ui text container">
                 <h1 class="ui header">Usando imagens: <em>sprites</em></h1>
@@ -520,9 +522,6 @@ const slime = new Image();
 slime.src = 'imgs/slime.png';
                    // x,  y
 ctx.drawImage(slime, 10, 10);</code></pre>
-                <!-- TODO colocar que apesar do código acima funcionar, se a imagem for grande pode levar um tempo até que ela seja baixada pelo navegador... mostrar exemplo -->
-                <div class="stage" id="slime-x"></div>
-                <p>Assim como fizemos quando animamos um quadrado, podemos animar a posição do <em>slime</em>.</p>
                 <p>Se quisermos desenhar o slime com um tamanho maior, por exemplo, também existe uma versão da função
                     <code>ctx.drawImage(...)</code> que recebe 5 parâmetros:</p>
                 <div class="stage" id="slime-draw-large"></div>
@@ -531,10 +530,74 @@ const slime = new Image();
 slime.src = 'imgs/slime.png';</span>
                          // larg, alt
 ctx.drawImage(slime, 10, 10, 128, 128);</code></pre>
+                <p>Como podemos ter várias propriedades que descrevem uma <em>sprite</em>, como sua posição, tamanho e
+                    imagem, podemos criar uma
+                    classe para representá-las.</p>
+            </div>
+            <div class="ui container">
+                <div class="ui grid">
+                    <div class="eight wide column">
+                        <pre><code class="js">class Sprite {
+    constructor(imagem, x, y, largura, altura) {
+        this.x = x;
+        this.y = y;
+        this.largura = largura;
+        this.altura = altura;
+        this.imagem = imagem;
+    }
+
+    desenhar(ctx) {
+        ctx.drawImage(
+            this.imagem,
+            this.x, this.y,
+            this.largura, this.altura);
+    }
+}</code></pre>
+                    </div>
+                    <div class="eight wide column">
+                        <pre><code class="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');
+const imagem = new Image();
+imagem.src = 'imgs/slime.png';</span>
+
+// exemplo de uso da classe
+const slime = new Slime(imagem, 10, 10, 128, 128);
+slime.desenhar(ctx);</code></pre>
+                    </div>
+                </div>
+            </div>
+            <div class="ui text container">
+                <p>Apesar de os códigos acima parecerem funcionar, eles têm um problema: se a imagem do slime não tiver
+                    sido baixada previamente pelo navegador (e estiver em <em>cache</em>), ao executar
+                    <code>ctx.drawImage(slime...)</code>, podemos receber o seguinte erro:</p>
+                <p class="message error">
+                <pre><code>Uncaught TypeError: Type error</code></pre>
+                </p>
+                <p>Isso acontece porque a imagem começou a ser baixada na linha 3 e quando a linha 5 tentar desenhá-la,
+                    é muitíssimo provável que ela ainda não tenha sido baixada.</p>
+                <p>Para resolver esse problema, devemos aguardar o carregamento da imagem para então desenhá-la...
+                    usando a classe <code>Sprite</code>, podemos fazer assim:</p>
+                <pre><code class="js">class Sprite {
+    constructor(imagem, x, y, largura, altura) {
+        <span class="unchanged">this.x = x;
+        this.y = y;
+        this.largura = largura;
+        this.altura = altura;</span>
+        this.imagem = imagem;
+        this.imagem.addEventListener('load', () => this.imagemCarregada = true);
+    }
+
+    desenhar(ctx) {
+        if (this.imagemCarregada) {
+            <span class="unchanged">ctx.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);</span>
+        }
+    }
+}</code></pre>
+                <div class="stage" id="slime-x"></div>
+                <p>Assim como fizemos quando animamos um quadrado, podemos animar a posição do <em>slime</em>.</p>
                 <p>Mas e se quisermos fazer uma animação como se fosse uma imagem <code>.gif</code>?</p>
                 <p>Se mandarmos desenhar um arquivo <code>.gif</code> contendo uma animaçãozinha em um
-                    <code>&lt;canvas&gt;&lt;/canvas&gt;</code>, apenas o primeiro quadro da animação será mostrado
-                    (igualzinho <span data-highlight="#slime-draw-large">ali ➚</span>), como se fosse um arquivo
+                    <code>&lt;canvas&gt;&lt;/canvas&gt;</code>, <strong>apenas o primeiro quadro da animação será
+                        mostrado</strong>, como se fosse um arquivo
                     <code>.png</code> ou <code>.jpg</code>.</p>
                 <p>Pra ter uma animação de imagens dentro de um <code>canvas</code>, então, precisamos de uma imagem que
                     contenha todos os quadros de animação e usar uma técnica chamada <strong>animação com
@@ -578,7 +641,7 @@ ctx.drawImage(slime, 10, 10, 128, 128);</code></pre>
                             <div class="ui green segment hidden" data-response-for="#quiz-sprite-option-image"><i
                                     class="check icon green"></i> GÊNIO(A)(X)!</div>
                             <div class="ui brown segment hidden" data-response-for="#quiz-sprite-option-soda"><i
-                                    class="close icon brown"></i> Sprite saber laranja?? D'onde já se viu...</div>
+                                    class="close icon brown"></i> Sprite sabor laranja?? D'onde já se viu...</div>
                             <div class="ui brown segment hidden" data-response-for="#quiz-sprite-option-fairy">
                                 <i class="close icon brown"></i> Olha, errado não tá... Mas tenta aí de novo.</div>
                         </div>
@@ -597,7 +660,7 @@ ctx.drawImage(slime, 10, 10, 128, 128);</code></pre>
                     ter
                     <strong>uma mesma imagem contendo todos os quadros de animação</strong> (em inglês, uma
                     <em>spritesheet</em>). Olha essa imagem do
-                    <code>slime-atoa-spritesheet.png</code>.</p>
+                    <code data-highlight="#img-slime-atoa-spritesheet">slime-atoa-spritesheet.png</code>.</p>
                 <img src="imgs/slime-atoa-spritesheet.png" alt="Quadros da animação do slime atoa"
                     class="block-centered pixelated" style="transform: translateY(-20px); width: 640px;"
                     id="img-slime-atoa-spritesheet">
@@ -830,12 +893,12 @@ animacao.comecar();
         this.y = y;
         this.largura = largura;
         this.altura = altura;
-        this.imagemPronta = false;
-        imagem.addEventListener('load', () => this.imagemPronta = true);
+        this.imagemCarregada = false;
+        imagem.addEventListener('load', () => this.imagemCarregada = true);
     }
 
     desenhar(ctx) {
-        if (this.imagemPronta) {
+        if (this.imagemCarregada) {
             ctx.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
         }
     }

@@ -301,7 +301,7 @@ $('#quiz-sprite input[type="radio"]').change(e => {
 let level4TriggerStarted = false;
 let level4InputChanged = 0;
 const clueToLevel5Jiggling = setInterval(() => $('#level-4 .treasure-clue').transition('jiggle'), 8000);
-$('#spritesheet-large input').change(() => {
+$('#spritesheet-large input').on('input', () => {
     level4InputChanged++;
     playAudio('whoosh');
     if (level4InputChanged >= 4 && !level4TriggerStarted) {
@@ -326,3 +326,13 @@ $('#spritesheet-large input').change(() => {
         }, 200);
     }
 });
+
+
+// deep links
+const hashes = ['#o-que-e-animacao', '#implementando-uma-animacao', '#usando-imagens-sprites', '#animacao-com-spritesheets'];
+if (hashes.indexOf(document.location.hash) !== -1) {
+    for (let level = 1; level <= hashes.indexOf(document.location.hash) + 1; level++) {
+        $(`#level-${level}`).removeClass('hidden');
+        $(`#level-${level} .sublevel.hidden`).removeClass('hidden');
+    }
+}
