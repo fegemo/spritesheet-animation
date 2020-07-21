@@ -3,6 +3,7 @@ import { Animacao } from './animacao.js';
 
 export class Overworld {
     constructor(container, characterContainer, mapContainer) {
+        this.container = container;
         const spriteImage = new Image();
         this.characterContainer = characterContainer;
         spriteImage.src = 'imgs/slime-vermelha.png';
@@ -46,11 +47,14 @@ export class Overworld {
 
     finishGame() {
         document.querySelector('.logo').classList.add('jumping');
-        this.characterContainer.classList.add('jumping');
+    }
+
+    getLevelWidth() {
+        return parseFloat(getComputedStyle(this.container).getPropertyValue('--map-level-width'));
     }
 
     getLevelX(level) {
-        const levelWidth = 142;
+        const levelWidth = this.getLevelWidth();
         return level * levelWidth + levelWidth / 2 - 10;
     }
 }

@@ -13,7 +13,7 @@
 
 <body>
     <header class="ui fixed inverted menu">
-        <div class="ui container">
+        <div class="ui fluid container">
             <a href="#" class="header item">
                 <img class="logo" src="imgs/favicon.png">
                 Animações com&nbsp;<em>spritesheets</em>
@@ -37,43 +37,46 @@
                     </div>
                 </div>
             </div>
-            <div class="item treasure link" data-frame-y="10" data-frame-x="0" data-prize="#images-modal">
-                <div class="ui move up reveal">
-                    <div class="visible content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
-                    </div>
-                    <div class="hidden content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="item treasure link" data-frame-y="6" data-frame-x="3" data-prize="#animation-class-modal">
-                <div class="ui move up reveal">
-                    <div class="visible content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
-                    </div>
-                    <div class="hidden content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
+            <div id="rewards">
+                <div class="item treasure link" data-frame-y="10" data-frame-x="0" data-prize="#images-modal">
+                    <div class="ui move up reveal">
+                        <div class="visible content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
+                        <div class="hidden content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="item treasure link" data-frame-y="2" data-frame-x="4" data-prize="#sprite-class-modal">
-                <div class="ui move up reveal">
-                    <div class="visible content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
-                    </div>
-                    <div class="hidden content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
+                <div class="item treasure link" data-frame-y="6" data-frame-x="3" data-prize="#animation-class-modal">
+                    <div class="ui move up reveal">
+                        <div class="visible content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
+                        <div class="hidden content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="item treasure link" data-frame-y="2" data-frame-x="8" data-prize="#animated-sprite-class-modal">
-                <div class="ui move up reveal">
-                    <div class="visible content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
+                <div class="item treasure link" data-frame-y="2" data-frame-x="4" data-prize="#sprite-class-modal">
+                    <div class="ui move up reveal">
+                        <div class="visible content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
+                        <div class="hidden content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
                     </div>
-                    <div class="hidden content">
-                        <canvas width="48" height="48" class="ui image"></canvas>
+                </div>
+                <div class="item treasure link" data-frame-y="2" data-frame-x="8"
+                    data-prize="#animated-sprite-class-modal">
+                    <div class="ui move up reveal">
+                        <div class="visible content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
+                        <div class="hidden content">
+                            <canvas width="48" height="48" class="ui image"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -146,14 +149,14 @@
                         5s</strong>.
                 </p>
                 <div id="wrong-y-animation" class="stage vertical-right"></div>
-                <pre><code lang="js">const ctx = canvasEl.getContext('2d');              // linha 1
+                <pre><code lang="js">const ctx = canvasEl.getContext('2d');<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">   </span>     // linha 1
 
-function desenhaQuadrado(x, y) {                    // linha 3
+function desenhaQuadrado(x, y) {<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">   </span>           // linha 3
     ctx.fillStyle = 'yellow';
     ctx.fillRect(x, y, 30, 30);
 }
 
-<div id="wrong-y-animation-9-11">for (let y = 0; y <= 140; y++) {                    // linha 9
+<div id="wrong-y-animation-9-11">for (let y = 0; y <= 140; y++) {<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">   </span>           // linha 9
     desenhaQuadrado(10, y);
 }</div></code></pre>
                 <p>Ué, mas o que aconteceu <span data-highlight="#wrong-y-animation">ali ➚</span>? Não houve animação...
@@ -337,6 +340,44 @@ console.timeEnd();     // pára de contar</code></pre>
             </div>
             <div class="ui container relative level-2-after-quiz-sublevel sublevel hidden"
                 id="proper-y-animation-container">
+                <pre><code lang="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');</span>
+
+<span class="unchanged">function desenhaQuadrado(x, y) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(x, y, 30, 30);
+}</span>
+<div id="proper-y-animation-8-14">const anim = {
+    horarioInicio: performance.now(),           // início da animação
+    duracao: 5000,                              // tempo em millissegundos
+    inicial: 0,                                 // y inicial do quadrado
+    final: 140,                                 // y final do quadrado
+    t: 0                                        // porcentagem de conclusão
+};</div>
+function atualiza() {
+<div id="proper-y-animation-16-20">    const horarioAgora = performance.now();
+    const tempoQueSePassou = horarioAgora - anim.horarioInicio;
+
+    // acha a porcentagem de conclusão da animação (de 0 a 1)
+    anim.t = tempoQueSePassou / anim.duracao;</div>
+
+<div id="proper-y-animation-22-26">    if (anim.t > 1) {
+        // se chegamos ao final da animação (t = 100%), reiniciamos ela
+        anim.t = 0;
+        anim.horarioInicio = horarioAgora;
+    }</div>
+
+<div id="proper-y-animation-28-32">    // define novo valor de y dada a porcentagem que já foi concluída
+    const y = anim.t * (anim.final - anim.inicial) + anim.inicial;
+
+    // desenha o quadrado na nova posição
+    desenhaQuadrado(10, y);</div>
+}
+
+<div id="proper-y-animation-34-35">// registra função 'atualiza' para ser chamada a cada 33ms (30x/s)
+setInterval(atualiza, 33);</div></code></pre>
+                <div>
+                    <div id="proper-y-animation" class="stage vertical-right"></div>
+                </div>
                 <div class="explanation">
                     <p>Putz, que tanto de código! Mas vamos entender cada partinha. Nas linhas <span
                             data-highlight="#proper-y-animation-8-14">8-14</span>, criamos um objeto
@@ -377,44 +418,6 @@ console.timeEnd();     // pára de contar</code></pre>
                         <code>atualiza</code> pra que ela seja chamada várias vezes por segundo - no caso, 30 vezes.
                     </p>
                     <p>Com isso conseguimos implementar uma animação!!</p>
-                </div>
-                <pre><code lang="js"><span class="unchanged">const ctx = canvasEl.getContext('2d');</span>
-
-<span class="unchanged">function desenhaQuadrado(x, y) {
-    ctx.fillStyle = 'yellow';
-    ctx.fillRect(x, y, 30, 30);
-}</span>
-<div id="proper-y-animation-8-14">const anim = {
-    horarioInicio: performance.now(),           // início da animação
-    duracao: 5000,                              // tempo em millissegundos
-    inicial: 0,                                 // y inicial do quadrado
-    final: 140,                                 // y final do quadrado
-    t: 0                                        // porcentagem de conclusão
-};</div>
-function atualiza() {
-<div id="proper-y-animation-16-20">    const horarioAgora = performance.now();
-    const tempoQueSePassou = horarioAgora - anim.horarioInicio;
-
-    // acha a porcentagem de conclusão da animação (de 0 a 1)
-    anim.t = tempoQueSePassou / anim.duracao;</div>
-
-<div id="proper-y-animation-22-26">    if (anim.t > 1) {
-        // se chegamos ao final da animação (t = 100%), reiniciamos ela
-        anim.t = 0;
-        anim.horarioInicio = horarioAgora;
-    }</div>
-
-<div id="proper-y-animation-28-32">    // define novo valor de y dada a porcentagem que já foi concluída
-    const y = anim.t * (anim.final - anim.inicial) + anim.inicial;
-
-    // desenha o quadrado na nova posição
-    desenhaQuadrado(10, y);</div>
-}
-
-<div id="proper-y-animation-34-35">// registra função 'atualiza' para ser chamada a cada 33ms (30x/s)
-setInterval(atualiza, 33);</div></code></pre>
-                <div>
-                    <div id="proper-y-animation" class="stage vertical-right"></div>
                 </div>
             </div>
 
@@ -669,15 +672,15 @@ slime.desenhar(ctx);</code></pre>
                     Eles
                     são os seguintes:</p>
                 <pre><code class="hs">ctx.drawImage(
-<span class="unchanged">    imagem,                     // a imagem sendo desenhada</span>
-    xQuadro,                    // o x do retângulo dentro da imagem 
-    yQuadro,                    // o y do retângulo ...
-    larguraQuadro,              // largura do quadro
-    alturaQuadro,               // altura do quadro
-<span class="unchanged">    x,                          // x do canvas onde queremos que apareça
-    y,                          // y do canvas ...
-    largura,                    // largura no canvas
-    altura                      // altura no canvas</span>
+<span class="unchanged">    imagem,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>         // a imagem sendo desenhada</span>
+    xQuadro,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>        // o x do retângulo dentro da imagem 
+    yQuadro,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>        // o y do retângulo ...
+    larguraQuadro,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>  // largura do quadro
+    alturaQuadro,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>   // altura do quadro
+<span class="unchanged">    x,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>              // x do canvas onde vai aparecer
+    y,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>              // y do canvas ...
+    largura,<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>        // largura no canvas
+    altura<span class="hide-on-tiny-screen">      </span><span class="hide-on-small-screen">      </span>          // altura no canvas</span>
 );</code></pre>
                 <p>Repare que a imagem <code
                         data-highlight="#img-slime-atoa-spritesheet">slime-atoa-spritesheet.png</code>
@@ -692,10 +695,10 @@ slime.desenhar(ctx);</code></pre>
                 <div id="spritesheet-frames">
                     <pre id="draw-image-frame-0"><code class="hs">ctx.drawImage(
 <span class="unchanged">    imagem,</span>
-    <ins>0</ins>,    // xQuadro
-    0,    // yQuadro
-    32,   // larguraQuadro
-    32,   // alturaQuadro
+    <ins>0</ins>,<span class="hide-on-tiny-screen">    // xQuadro</span>
+    0,<span class="hide-on-tiny-screen">    // yQuadro</span>
+    32,<span class="hide-on-tiny-screen">   // larguraQuadro</span>
+    32,<span class="hide-on-tiny-screen">   // alturaQuadro</span>
 <span class="unchanged">    x,
     y,
     largura,
@@ -703,10 +706,10 @@ slime.desenhar(ctx);</code></pre>
 );</code></pre>
                     <pre id="draw-image-frame-1"><code class="hs">ctx.drawImage(
 <span class="unchanged"> imagem,</span>
-    <ins>32</ins>,   // xQuadro
-    0,    // yQuadro
-    32,   // larguraQuadro
-    32,   // alturaQuadro
+    <ins>32</ins>,<span class="hide-on-small-screen">   // xQuadro</span>
+    0,<span class="hide-on-small-screen">    // yQuadro</span>
+    32,<span class="hide-on-small-screen">   // larguraQuadro</span>
+    32,<span class="hide-on-small-screen">   // alturaQuadro</span>
 <span class="unchanged">    x,
     y,
     largura,
@@ -715,10 +718,10 @@ slime.desenhar(ctx);</code></pre>
                     <p>...</p>
                     <pre id="draw-image-frame-9"><code class="hs">ctx.drawImage(
 <span class="unchanged"> imagem,</span>
-    <ins>320-32</ins>, // xQuadro
-    0,      // yQuadro
-    32,   // larguraQuadro
-    32,   // alturaQuadro
+    <ins>320-32</ins>,<span class="hide-on-small-screen"> // xQuadro</span>
+    0,<span class="hide-on-small-screen">      // yQuadro</span>
+    32,<span class="hide-on-small-screen">   // larguraQuadro</span>
+    32,<span class="hide-on-small-screen">   // alturaQuadro</span>
 <span class="unchanged">    x,
     y,
     largura,
@@ -731,14 +734,14 @@ slime.desenhar(ctx);</code></pre>
                 <div id="quiz-frame-formula-container">
                     <pre><code class="js">function desenhaQuadro(quadro, x, y) {
     ctx.drawImage(
-        slime,      // imagem do slime
-        ???,        // xQuadro: uma fórmula
-        0,          // yQuadro sempre 0
-        32,         // larg/alt do quadro é 32
+        slime,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span> // imagem do slime
+        ???,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span>   // xQuadro: uma fórmula
+        0,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span>     // yQuadro sempre 0
+        32,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span>    // larg/alt do quadro é 32
         32,
-        x,          // x,y do parâmetro
+        x,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span>     // x,y do parâmetro
         y,
-        32,         // larg/alt sempre 32
+        32,<span class="hide-on-tiny-screen">   </span><span class="hide-on-small-screen">  </span>    // larg/alt sempre 32
         32
     );
 }</code></pre>
@@ -747,38 +750,38 @@ slime.desenhar(ctx);</code></pre>
                             um
                             número de
                             <code>0</code> a <code>9</code> indicando qual quadro desenhar... como você a faria?</p>
-                        <div id="quiz-frame-container">
-                            <div class="ui form">
-                                <ul class="grouped fields quiz">
-                                    <li class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
-                                                id="quiz-frame-option-0">
-                                            <label class="quiz-option-label" for="quiz-frame-option-0"><code>0</code>,
-                                                ué.</label>
-                                        </div>
-                                    </li>
-                                    <li class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
-                                                id="quiz-frame-option-32">
-                                            <label class="quiz-option-label" for="quiz-frame-option-32"><code>32</code>,
-                                                não?</label>
-                                        </div>
-                                    </li>
-                                    <li class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="quiz-option hidden" name="quiz-frame"
-                                                id="quiz-frame-option-formula">
-                                            <label class="quiz-option-label"
-                                                for="quiz-frame-option-formula"><em>Easy</em>,
-                                                <code>quadro * 32</code></label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="stage" id="quiz-frame"></div>
+                    </div>
+                    <div id="quiz-frame-container">
+                        <div class="ui form">
+                            <ul class="grouped fields quiz">
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                            id="quiz-frame-option-0">
+                                        <label class="quiz-option-label" for="quiz-frame-option-0"><code>0</code>,
+                                            ué.</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                            id="quiz-frame-option-32">
+                                        <label class="quiz-option-label" for="quiz-frame-option-32"><code>32</code>,
+                                            não?</label>
+                                    </div>
+                                </li>
+                                <li class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" class="quiz-option hidden" name="quiz-frame"
+                                            id="quiz-frame-option-formula">
+                                        <label class="quiz-option-label"
+                                            for="quiz-frame-option-formula"><em>Easy</em>,
+                                            <code>quadro * 32</code></label>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
+                        <div class="stage" id="quiz-frame"></div>
                     </div>
                 </div>
 
@@ -821,8 +824,8 @@ animacao.comecar();
                             número real <small>(pode ter parte fracionário, como 2.64, 3.61 etc.)</small> e, portanto,
                             precisamos convertê-lo para inteiro, arrendondando para baixo com
                             <code>Math.floor(numeroReal)</code>.</p>
-                        <div class="stage" id="spritesheet-animation"></div>
                     </div>
+                    <div class="stage" id="spritesheet-animation"></div>
                 </div>
                 <div class="stage" id="spritesheet-animation-result"></div>
                 <p>Show!! O resultado é <span data-highlight="#spritesheet-animation-result">← este aqui</span>. Com
@@ -868,7 +871,7 @@ animacao.comecar();
     </main>
 
     <footer class="ui inverted vertical footer segment">
-        <div class="ui center aligned container">
+        <div class="ui center aligned fluid container">
             <div class="ui stackable inverted divided centered grid">
                 <div class="ten wide column  center aligned">
                     <h4 class="ui inverted header">Animações com <em>spritesheets</em></h4>

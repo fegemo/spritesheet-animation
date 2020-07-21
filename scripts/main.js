@@ -44,7 +44,7 @@ const controllingTStage = new StageBuilder(document.querySelector('#controlling-
     .attachBoundInput({ type: 'number', label: 'Raio', observable: 'size', formatter: { type: 'number' }, attrs: { disabled: true }, classes: ['number-input', 'number-input-3'] })
     .attachBoundInput({ type: 'range', label: 't', observable: 't', attrs: { min: 0, max: 1, step: 0.01 }, classes: ['range-input'] })
     .attachBoundInput({ type: 'number', label: '&nbsp;', observable: 't', formatter: { type: 'number', decimals: 2 }, attrs: { disabled: true }, classes: ['number-input', 'number-input-3'] })
-    .attachActor({ type: 'stroke-circle', props: { x: 30, y: 30 }, bindings: [{ name: 'size', property: 'size' }] })
+    .attachActor({ type: 'stroke-circle', props: { x: 37.5, y: 30 }, bindings: [{ name: 'size', property: 'size' }] })
     // .attachAnimation({ loop: true, observable: 'size', start: 15, end: 45, duration: 5000, delayAfter: 2000 })
     .build();
 
